@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+      
+{{mensaje}}
+<div>
+    <button v-on:click="changeVisibility">Mostrar/Ocultar</button>
+</div>
+
+
+<br></br>
+ 
+
+        
+
+<ul v-if="mostrar"> <!--envocamos  el valor del metodo mostrar ya sea true o false-->
+
+    <strong>lista por componente anidado:</strong>
+            <br></br>
+<tv-show-list></tv-show-list>
+
+            <br></br>
+            <strong>lista por instanciaVue:</strong>
+            <br></br>
+            <li v-for="(show, index) in tvshows" :key="index">
+                <strong>{{show.name}}</strong>({{show.seasons}}temporadas)
+            </li>
+            <br></br>
+
+
+
+            <strong>lista por componentes:</strong>
+            <br></br>
+            <tv-show 
+            v-for="(show, index) in tvshows" 
+            :key="index"
+            v-bind:name="show.name"
+            :seasons="show.seasons">
+        </tv-show>
+
+        </ul>
+        <div v-else>
+            no hay datos
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+
+ <script>
+ Vue.component('tv-show-list', {
+    data:function(){
+        return{
+            tvshows: [
+            {name: 'el chavo', seasons: 82},
+            {name: 'los simpson', seasons: 500},
+            {name: 'dragon boll', seasons: 100},
+            {name: 'pokemon', seasons: 200}
+        ]
+        }
+    },
+    template:`
+        <li>
+            <tv-show 
+            v-for="(show, index) in tvshows" 
+            :key="index"
+            v-bind:name="show.name"
+            :seasons="show.seasons">
+        </tv-show>
+            </li>
+        `
+ })
+ 
+ 
+ 
+
+    Vue.component('tv-show',{//primer componente vue
+
+        props:{
+            name:String,
+            seasons: Number,
+        },
+        template:`
+        <li>
+            <strong>{{name}}</strong> ({{seasons}} Temporadas)
+            </li>
+        `
+    })
+
+    const app=new Vue({
+        el:'#app',
+        data:{
+            
+        mensaje:'hola mundo',
+        mostrar: true,
+        tvshows: [
+            {name: 'game of thronos', seasons: 7},
+            {name: 'breaking bad', seasons: 5},
+            {name: 'lost', seasons: 6},
+            {name: 'battlestar galactica', seasons: 4}
+        ]
+        },
+
+        methods:{
+            changeVisibility: function(){
+                this.mostrar=!this.mostrar
+            }
+        }
+        
+    })
+ </script>
+</body>
+</html>
